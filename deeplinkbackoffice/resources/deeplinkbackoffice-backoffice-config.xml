@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<config xmlns="http://www.hybris.com/cockpit/config"
+        xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"
+        xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea"
+        xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config">
+    <context component="explorer-tree" merge-by="module">
+        <n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
+            <n:navigation-node id="DeepLink">
+                <n:type-node id="DeepLink" code="DeepLink"/>
+            </n:navigation-node>
+        </n:explorer-tree>
+    </context>
+
+    <context type="DeepLink">
+        <context component="listview">
+            <list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+                <list:column qualifier="code"/>
+                <list:column qualifier="name"/>
+                <list:column qualifier="status"/>
+            </list:list-view>
+        </context>
+
+        <context parent="GenericItem" component="advanced-search">
+            <advanced-search:advanced-search
+                    xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+                <advanced-search:field-list>
+                    <advanced-search:field name="name" selected="false"/>
+                    <advanced-search:field name="status" selected="false"/>
+                    <advanced-search:field name="url" selected="false"/>
+                </advanced-search:field-list>
+            </advanced-search:advanced-search>
+        </context>
+
+        <context parent="GenericItem" component="editor-area">
+            <editorArea:editorArea logic-handler="versionedRuleEditorAreaLogicHandler">
+                <editorArea:tab name="tab.configuration.abstractrule">
+                    <editorArea:section name="sec.configuration.abstractrule.details">
+                        <editorArea:attribute qualifier="name"/>
+                        <editorArea:attribute qualifier="url"/>
+                        <editorArea:attribute qualifier="status"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+
+        <context component="create-wizard">
+            <wz:flow id="DeepLinkWizard" title="Create DeepLink">
+                <wz:prepare id="deepLinkPrepare">
+                    <wz:initialize property="newDeepLink" type="DeepLink"/>
+                    <wz:assign property="newDeepLink.code" value="ctx.code"/>
+                </wz:prepare>
+                <wz:step id="step1" label="create.product.essential.label" sublabel="create.product.essential.sublabel">
+                    <wz:info id="step1.intro" position="top" label="create new deepLink"/>
+                    <wz:content id="step1.content">
+                        <wz:property-list root="newDeepLink">
+                            <wz:property qualifier="code" type="java.lang.String"/>
+                            <wz:property qualifier="name" type="java.lang.String"/>
+                            <wz:property qualifier="url" type="java.lang.String"/>
+                            <wz:property qualifier="status" type="com.training.deeplink.enums.Status"/>
+                        </wz:property-list>
+                    </wz:content>
+                    <wz:navigation id="step1.navigation">
+                        <wz:cancel/>
+                        <wz:done visible="!#empty(newDeepLink.code)">
+                            <wz:save property="newDeepLink"/>
+                        </wz:done>
+                    </wz:navigation>
+                </wz:step>
+            </wz:flow>
+        </context>
+    </context>
+</config>

@@ -1,0 +1,11 @@
+$lang = en
+
+INSERT_UPDATE DeepLink; code[unique = true]; name[lang = $lang]   ;
+                      ; A001               ; link to rozetka      ;
+                      ; A002               ; link to rozetka      ;
+                      ; A003               ; link to rozetka      ;
+                      ; A004               ; link to hotline      ;
+                      ; A005               ; link to hotline      ;
+                      ; A006               ; link to hotline      ;
+                      ; A007               ; link to manufacturer ;
+                      ; A008               ; link to manufacturer ;

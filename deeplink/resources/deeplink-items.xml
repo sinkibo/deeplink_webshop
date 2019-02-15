@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2018 SAP SE or an SAP affiliate company. All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <enumtypes>
+        <enumtype code="Status" dynamic="false">
+            <value code="NEW"/>
+            <value code="VERIFIED"/>
+            <value code="NOT_AVAILABLE"/>
+        </enumtype>
+        <enumtype code="Role" dynamic="false">
+            <value code="CUSTOMER"/>
+            <value code="MODERATOR"/>
+            <value code="ADMIN"/>
+        </enumtype>
+    </enumtypes>
+
+    <relations>
+        <relation code="User2DeepLink" autocreate="true" generate="false" localized="false">
+            <sourceElement qualifier="user" type="User" cardinality="one">
+                <modifiers read="true" write="true" search="true" optional="true"/>
+            </sourceElement>
+            <targetElement qualifier="deepLinks" type="DeepLink" cardinality="many" collectiontype="set">
+                <modifiers read="true" write="true" search="true" optional="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="Product2DeepLink" autocreate="true" generate="false" localized="false">
+            <deployment table="Product2DeepLink" typecode="30271"/>
+            <sourceElement qualifier="products" type="Product" collectiontype="set" cardinality="many" ordered="false">
+                <modifiers read="true" write="true" search="true" optional="true"/>
+            </sourceElement>
+            <targetElement qualifier="deepLinks" type="Deeplink" cardinality="many">
+                <modifiers read="true" write="true" search="true" optional="true"/>
+            </targetElement>
+        </relation>
+    </relations>
+
+
+    <itemtypes>
+
+        <itemtype code="DeepLink" generate="true" autocreate="true">
+            <deployment table="DeepLinks" typecode="30268"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <description>unique code of the link</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="name" type="localized:java.lang.String">
+                    <description>name of the link</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="status" type="Status">
+                    <description>status of the link</description>
+                    <defaultvalue>com.training.deeplink.enums.Status.NEW</defaultvalue>
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" search="true" optional="true"/>
+                </attribute>
+                <attribute qualifier="url" type="java.lang.String">
+                    <description>url of the string</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="successVerificationDate" type="java.util.Date">
+                    <description>date of the last success verification</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="dateAdded" type="java.util.Date">
+                    <description>date of the link addition</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="failVerificationDate" type="java.util.Date">
+                    <description>date of the last fail verification</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype generate="true" autocreate="false" code="Product">
+            <attributes>
+                <attribute qualifier="deepLinkCount" type="java.lang.Integer">
+                    <persistence type="dynamic" attributeHandler="deepLinkCountAttributeHandler"/>
+                    <modifiers read="true" write="false"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+    </itemtypes>
+</items>
